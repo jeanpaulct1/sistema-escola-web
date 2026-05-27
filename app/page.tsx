@@ -1,65 +1,91 @@
-import Image from "next/image";
+'use client'; // Avisa ao Next.js que este componente usa interatividade (React Hooks)
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
+import { useState } from 'react';
+
+export default function HomePage() {
+  const router = useRouter();
+  // Exemplo prático de Estado (State) no React para testar os cliques
+  const [perfilSelecionado, setPerfilSelecionado] = useState<string | null>(null);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex flex-col items-center justify-center p-6">
+      
+      {/* Cabeçalho / Logo */}
+      <div className="text-center mb-12">
+        <div className="inline-flex p-4 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-200 mb-4 text-3xl">
+          📚
+        </div>
+        <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight sm:text-5xl">
+          Portal Escolar
+        </h1>
+        <p className="mt-3 text-lg text-slate-600 max-w-md mx-auto">
+          Selecione como você deseja acessar a plataforma hoje.
+        </p>
+      </div>
+
+      {/* Grid com os Dois Grandes Botões de Caminho */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl">
+        
+        {/* CARD DO ALUNO */}
+        <button 
+          onClick={() => router.push('/aluno')}
+          className="group relative bg-white border border-slate-200 rounded-3xl p-8 text-left shadow-sm hover:shadow-xl hover:border-blue-500 transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-4xl p-3 bg-blue-50 rounded-2xl group-hover:bg-blue-500 group-hover:animate-pulse transition-colors">
+              🎒
+            </span>
+            <span className="text-slate-400 group-hover:text-blue-500 transition-colors text-xl font-bold">
+              →
+            </span>
+          </div>
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">
+            Sou Aluno
+          </h2>
+          <p className="text-slate-500 text-sm leading-relaxed">
+            Acesse imediatamente os materiais didáticos, vídeos e atividades organizados para a sua turma.
           </p>
+        </button>
+
+        {/* CARD DO PROFESSOR */}
+        <button 
+          onClick={() => router.push('/login')}
+          className="group relative bg-white border border-slate-200 rounded-3xl p-8 text-left shadow-sm hover:shadow-xl hover:border-emerald-500 transition-all duration-300 transform hover:-translate-y-1"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-4xl p-3 bg-emerald-50 rounded-2xl group-hover:bg-emerald-500 group-hover:animate-pulse transition-colors">
+              👩‍🏫
+            </span>
+            <span className="text-slate-400 group-hover:text-emerald-500 transition-colors text-xl font-bold">
+              →
+            </span>
+          </div>
+          <h2 className="text-2xl font-bold text-slate-800 mb-2">
+            Sou Professor
+          </h2>
+          <p className="text-slate-500 text-sm leading-relaxed">
+            Área restrita para gerenciamento de turmas, publicação de novos conteúdos e controle do painel escolar.
+          </p>
+        </button>
+
+      </div>
+
+      {/* Feedback Visual usando o Estado do React (Apenas para testes rápidos) */}
+      {perfilSelecionado && (
+        <div className="mt-8 p-4 bg-slate-800 text-slate-200 rounded-xl text-sm font-mono animate-fade-in">
+          ℹ️ Você clicou em: <span className="text-yellow-400 font-bold">{perfilSelecionado.toUpperCase()}</span>. 
+          {perfilSelecionado === 'aluno' 
+            ? ' Próximo passo: Redirecionar para a lista de turmas.' 
+            : ' Próximo passo: Abrir a tela de login.'}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      )}
+
+      {/* Rodapé sutil */}
+      <footer className="mt-16 text-xs text-slate-400">
+        Portal Escolar &copy; {new Date().getFullYear()}
+      </footer>
+
+    </main>
   );
 }
