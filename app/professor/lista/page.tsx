@@ -11,9 +11,11 @@ const mapaTurmas: Record<string, string> = {
   '10': '1º Ano EM', '11': '2º Ano EM', '12': '3º Ano EM'
 };
 
+
 export default function ListaMateriaisPage() {
   const router = useRouter();
-  
+  const [listaTurmas, setListaTurmas] = useState<any[]>([]);
+
   const [materiais, setMateriais] = useState<any[]>([]);
   const [pesquisa, setPesquisa] = useState('');
   const [filtroTurma, setFiltroTurma] = useState('');
@@ -21,27 +23,24 @@ export default function ListaMateriaisPage() {
 
   // Busca os dados da API assim que a tela carrega
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login');
-      return;
-    }
-
-    const buscarMateriais = async () => {
+    const carregarDados = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/materiais');
-        if (res.ok) {
-          const dados = await res.json();
-          setMateriais(dados);
-        }
+        // Busca turmas e materiais simultaneamente
+        const [resTurmas, resMateriais] = await Promise.all([
+          fetch('http://127.0.0.1:8000/api/turmas'),
+          fetch('http://127.0.0.1:8000/api/materiais')
+        ]);
+        
+        if (resTurmas.ok) setListaTurmas(await resTurmas.json());
+        if (resMateriais.ok) setMateriais(await resMateriais.json());
       } catch (error) {
-        console.error("Erro ao buscar materiais:", error);
+        console.error("Erro ao carregar:", error);
       } finally {
         setCarregando(false);
       }
     };
 
-    buscarMateriais();
+    carregarDados();
   }, [router]);
 
   // Função para deletar chamando o Python
@@ -120,11 +119,13 @@ export default function ListaMateriaisPage() {
               value={filtroTurma}
               onChange={(e) => setFiltroTurma(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:border-blue-500 outline-none transition-all text-sm bg-white"
-            >
+>
               <option value="">Todas as turmas</option>
-              <option value="1º Ano">1º Ano</option>
-              <option value="6º Ano">6º Ano</option>
-              <option value="1º Ano EM">1º Ano EM</option>
+               {listaTurmas.map((turma) => (
+               <option key={turma.id} value={turma.nome}>
+               {turma.nome}
+             </option>
+           ))}
             </select>
           </div>
         </div>
@@ -166,6 +167,16 @@ export default function ListaMateriaisPage() {
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                  <button
+                      onClick={() => window.open(`/aluno/${material.turma_id}`)}
+                      className="p-2.5 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-colors"
+                   title="Visualizar material"
+        > 
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                   </button>
                 </div>

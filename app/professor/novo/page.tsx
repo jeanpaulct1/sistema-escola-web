@@ -21,6 +21,7 @@ export default function NovoMaterialPage() {
 
   // Proteção de rota
 useEffect(() => {
+  
     const token = localStorage.getItem('token');
     if (!token) {
       router.push('/login');
@@ -30,10 +31,11 @@ useEffect(() => {
     // Busca as turmas reais no Python
     const buscarTurmas = async () => {
       try {
-        const res = await fetch('http://localhost:8000/api/turmas');
+        const res = await fetch('http://127.0.0.1:8000/api/turmas');
         if (res.ok) {
           const dados = await res.json();
           setTurmas(dados);
+         
         }
       } catch (error) {
         console.error("Erro ao buscar turmas:", error);

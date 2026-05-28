@@ -11,6 +11,8 @@ export default function TurmaMateriaisPage() {
   const [materiais, setMateriais] = useState<any[]>([]);
   const [carregando, setCarregando] = useState(true);
 
+  
+
   useEffect(() => {
     // Busca na API passando o ID da turma na URL (?turma_id=...)
     const buscarMateriaisDaTurma = async () => {

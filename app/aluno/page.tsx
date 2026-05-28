@@ -12,6 +12,7 @@ interface Turma {
 }
 
 export default function AlunoPage() {
+  
   const router = useRouter();
   
   const [turmas, setTurmas] = useState<Turma[]>([]);

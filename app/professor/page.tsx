@@ -6,14 +6,36 @@ import { useRouter } from 'next/navigation';
 export default function ProfessorDashboard() {
   const router = useRouter();
   const [nomeProfessor, setNomeProfessor] = useState('Professora');
+const [materiais, setMateriais] = useState([]);
+const [turmas, setTurmas] = useState([]);
+
 
   // Mini-segurança: Só deixa ver o painel se tiver o token de login
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/login');
+ useEffect(() => {
+  // 1. Mini-segurança: Verifica o token
+  const token = localStorage.getItem('token');
+  if (!token) {
+    router.push('/login');
+    return; // Para a execução aqui se não estiver logado
+  }
+
+  // 2. Busca os dados reais para o painel
+  const carregarDashboard = async () => {
+    try {
+      const [resMat, resTur] = await Promise.all([
+        fetch('http://127.0.0.1:8000/api/materiais'),
+        fetch('http://127.0.0.1:8000/api/turmas')
+      ]);
+      
+      if (resMat.ok) setMateriais(await resMat.json());
+      if (resTur.ok) setTurmas(await resTur.json());
+    } catch (error) {
+      console.error("Erro ao carregar dashboard:", error);
     }
-  }, [router]);
+  };
+
+  carregarDashboard();
+}, [router]);
 
   const handleSair = () => {
   // Cria uma janela de confirmação nativa do navegador
@@ -90,16 +112,17 @@ export default function ProfessorDashboard() {
         </div>
 
         {/* Pequeno Resumo de Status (Opcional, mas dá um ar profissional) */}
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 border-t border-slate-200 pt-8">
-          <div>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Total de Materiais</p>
-            <p className="text-2xl font-bold text-slate-700">12</p>
-          </div>
-          <div>
-            <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Turmas Ativas</p>
-            <p className="text-2xl font-bold text-slate-700">8</p>
-          </div>
-        </div>
+       {/* Resumo de Status Dinâmico */}
+    <div className="mt-12 grid grid-cols-2 md:grid-cols-3 gap-4 border-t border-slate-200 pt-8">
+      <div>
+        <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Total de Materiais</p>
+         <p className="text-2xl font-bold text-slate-700">{materiais.length}</p>
+     </div>
+    <div>
+         <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">Turmas Ativas</p>
+         <p className="text-2xl font-bold text-slate-700">{turmas.length}</p>
+    </div>
+</div>
 
       </div>
     </main>
