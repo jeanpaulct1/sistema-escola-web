@@ -23,8 +23,8 @@ const [turmas, setTurmas] = useState([]);
   const carregarDashboard = async () => {
     try {
       const [resMat, resTur] = await Promise.all([
-        fetch('http://127.0.0.1:8000/api/materiais'),
-        fetch('http://127.0.0.1:8000/api/turmas')
+        fetch('https://sistema-escola-api-kfkl.onrender.com/api/materiais'),
+        fetch('https://sistema-escola-api-kfkl.onrender.com/api/turmas')
       ]);
       
       if (resMat.ok) setMateriais(await resMat.json());

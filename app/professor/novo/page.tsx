@@ -31,7 +31,7 @@ useEffect(() => {
     // Busca as turmas reais no Python
     const buscarTurmas = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:8000/api/turmas');
+        const res = await fetch('https://sistema-escola-api-kfkl.onrender.com/api/turmas');
         if (res.ok) {
           const dados = await res.json();
           setTurmas(dados);
@@ -53,7 +53,7 @@ useEffect(() => {
     // Simulação de envio para a API
     try {
       // O fetch real que bate no Python
-      const resposta = await fetch('http://localhost:8000/api/materiais', {
+      const resposta = await fetch('https://sistema-escola-api-kfkl.onrender.com/api/materiais', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

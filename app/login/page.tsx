@@ -17,7 +17,7 @@ export default function LoginPage() {
 
     try {
       // Aqui o React bate na porta do nosso backend em Python!
-      const resposta = await fetch('http://localhost:8000/api/login', {
+      const resposta = await fetch('https://sistema-escola-api-kfkl.onrender.com/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

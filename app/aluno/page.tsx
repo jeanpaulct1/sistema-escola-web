@@ -22,8 +22,8 @@ export default function AlunoPage() {
     const carregarDadosDoAluno = async () => {
       try {
         const [resTurmas, resMateriais] = await Promise.all([
-          fetch('http://localhost:8000/api/turmas'),
-          fetch('http://localhost:8000/api/materiais')
+          fetch('https://sistema-escola-api-kfkl.onrender.com/api/turmas'),
+          fetch('https://sistema-escola-api-kfkl.onrender.com/api/materiais')
         ]);
 
         if (resTurmas.ok && resMateriais.ok) {

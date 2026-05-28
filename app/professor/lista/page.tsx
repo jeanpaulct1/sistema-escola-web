@@ -27,8 +27,8 @@ export default function ListaMateriaisPage() {
       try {
         // Busca turmas e materiais simultaneamente
         const [resTurmas, resMateriais] = await Promise.all([
-          fetch('http://127.0.0.1:8000/api/turmas'),
-          fetch('http://127.0.0.1:8000/api/materiais')
+          fetch('https://sistema-escola-api-kfkl.onrender.com/api/turmas'),
+          fetch('https://sistema-escola-api-kfkl.onrender.com/api/materiais')
         ]);
         
         if (resTurmas.ok) setListaTurmas(await resTurmas.json());
@@ -49,7 +49,7 @@ export default function ListaMateriaisPage() {
     
     if (confirmar) {
       try {
-        const res = await fetch(`http://localhost:8000/api/materiais/${id}`, { 
+        const res = await fetch(`https://sistema-escola-api-kfkl.onrender.com/api/materiais/${id}`, { 
           method: 'DELETE' 
         });
         

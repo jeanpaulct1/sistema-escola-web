@@ -17,7 +17,7 @@ export default function TurmaMateriaisPage() {
     // Busca na API passando o ID da turma na URL (?turma_id=...)
     const buscarMateriaisDaTurma = async () => {
       try {
-        const res = await fetch(`http://localhost:8000/api/materiais?turma_id=${turmaId}`);
+        const res = await fetch(`https://sistema-escola-api-kfkl.onrender.com/api/materiais?turma_id=${turmaId}`);
         if (res.ok) {
           const dados = await res.json();
           setMateriais(dados);
